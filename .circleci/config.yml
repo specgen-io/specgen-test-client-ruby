@@ -1,0 +1,78 @@
+version: 2.1
+
+parameters:
+  specgen-version:
+    type: string
+    default: 1.10.18
+
+jobs:
+  client-ruby:
+    working_directory: ~/specgen-tests
+    docker:
+      - image: circleci/ruby:2.4.9
+    steps:
+      - checkout
+      - start-service:
+          port: 8081
+      - run:
+          name: Test Ruby client
+          command: |
+            gem install specgen -v << pipeline.parameters.specgen-version >>
+            gem install test-unit-runner-junitxml
+            export SERVICE_URL=http://localhost:8081
+            rake
+      - store_test_results:
+          path: ./junit.xml
+          
+commands:
+  start-service:
+    parameters:
+      port:
+        type: integer
+    steps:
+      - run:
+          name: Install service-go
+          command: |
+            curl -L https://github.com/specgen-io/specgen-test-service-go/releases/download/<< pipeline.parameters.specgen-version >>/service-go_linux_amd64.zip > service-go.zip
+            unzip -o service-go.zip
+            ls -la
+      - run:
+          name: Start service-go
+          command: ./service-go --port << parameters.port >>
+          background: true
+      - wait-url:
+          url: http://localhost:<< parameters.port >>/
+
+  wait-url:
+    parameters:
+      url:
+        type: string
+      sleep:
+        type: integer
+        default: 5
+      attempts:
+        type: integer
+        default: 12
+    steps:
+      - run:
+          name: Wait until url is available
+          command: |
+            attempt_counter=0
+            max_attempts=<< parameters.attempts >>
+
+            until $(curl --output /dev/null --silent --head --fail << parameters.url >>); do
+              if [ ${attempt_counter} -eq ${max_attempts} ];then
+                echo "Max attempts reached"
+                exit 1
+              fi
+
+              printf '.'
+              attempt_counter=$(($attempt_counter+1))
+              sleep << parameters.sleep >>
+            done
+
+workflows:
+  client-ruby:
+    jobs:
+      - client-ruby:
+          context: specgen
