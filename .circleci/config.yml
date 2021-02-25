@@ -20,9 +20,10 @@ jobs:
             gem install specgen -v << pipeline.parameters.specgen-version >>
             gem install test-unit-runner-junitxml
             export SERVICE_URL=http://localhost:8081
+            mkdir -p ./test-results
             rake
       - store_test_results:
-          path: ./junit.xml
+          path: ./test-results
           
 commands:
   start-service:
