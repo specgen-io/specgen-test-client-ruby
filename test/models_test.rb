@@ -1,7 +1,6 @@
 require "test/unit/runner/junitxml"
 
 require 'test_service_client/jsoner'
-require 'test_service_client/tod'
 require 'test_service_client/models'
 
 module TestService

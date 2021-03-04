@@ -1,5 +1,4 @@
 require "date"
-require "test_service_client/tod"
 require "test_service_client/type"
 require "test_service_client/enum"
 require "test_service_client/dataclass"
