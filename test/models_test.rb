@@ -15,29 +15,25 @@ module TestService
 
     def test_numeric
       data = NumericFields.new(
-          byte_field: 0,
-          short_field: 0,
           int_field: 0,
           long_field: 0,
           float_field: 1.23,
           double_field: 1.23,
           decimal_field: 1.23,
       )
-      json = '{"byte_field":0,"short_field":0,"int_field":0,"long_field":0,"float_field":1.23,"double_field":1.23,"decimal_field":1.23}'
+      json = '{"int_field":0,"long_field":0,"float_field":1.23,"double_field":1.23,"decimal_field":1.23}'
       check_serialization(NumericFields, data, json)
     end
 
     def test_non_numeric
       data = NonNumericFields.new(
           boolean_field: true,
-          char_field: 'x',
           string_field: "the string",
           uuid_field: "123e4567-e89b-12d3-a456-426655440000",
           date_field: Date.new(2019, 11, 30),
           datetime_field: DateTime.new(2019, 11, 30, 17, 45, 55),
-          time_field: TimeOfDay.new(17, 45, 55),
           )
-      json = '{"boolean_field":true,"char_field":"x","string_field":"the string","uuid_field":"123e4567-e89b-12d3-a456-426655440000","date_field":"2019-11-30","datetime_field":"2019-11-30T17:45:55","time_field":"17:45:55"}'
+      json = '{"boolean_field":true,"string_field":"the string","uuid_field":"123e4567-e89b-12d3-a456-426655440000","date_field":"2019-11-30","datetime_field":"2019-11-30T17:45:55"}'
       check_serialization(NonNumericFields, data, json)
     end
 

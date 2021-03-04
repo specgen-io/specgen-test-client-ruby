@@ -71,20 +71,17 @@ module TestService
   end
   
   class CheckClient < BaseClient
-    def check_query(p_string:, p_string_opt:, p_string_array:, p_date:, p_date_array:, p_time:, p_datetime:, p_byte:, p_int:, p_long:, p_decimal:, p_char:, p_enum:, p_string_defaulted: 'the default value')
+    def check_query(p_string:, p_string_opt:, p_string_array:, p_date:, p_date_array:, p_datetime:, p_int:, p_long:, p_decimal:, p_enum:, p_string_defaulted: 'the default value')
       query = StringParams.new
       query.set('p_string', String, p_string)
       query.set('p_string_opt', T.nilable(String), p_string_opt)
       query.set('p_string_array', T.array(String), p_string_array)
       query.set('p_date', Date, p_date)
       query.set('p_date_array', T.array(Date), p_date_array)
-      query.set('p_time', TimeOfDay, p_time)
       query.set('p_datetime', DateTime, p_datetime)
-      query.set('p_byte', Integer, p_byte)
       query.set('p_int', Integer, p_int)
       query.set('p_long', Integer, p_long)
       query.set('p_decimal', Float, p_decimal)
-      query.set('p_char', String, p_char)
       query.set('p_enum', Choice, p_enum)
       query.set('p_string_defaulted', String, p_string_defaulted)
       url = @base_uri + '/check/query' + query.query_str

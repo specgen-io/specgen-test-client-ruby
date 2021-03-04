@@ -52,14 +52,12 @@ module TestService
   
   class NumericFields
     include DataClass
-    val :byte_field, Integer
-    val :short_field, Integer
     val :int_field, Integer
     val :long_field, Integer
     val :float_field, Float
     val :double_field, Float
     val :decimal_field, Float
-    def initialize(byte_field:, short_field:, int_field:, long_field:, float_field:, double_field:, decimal_field:)
+    def initialize(int_field:, long_field:, float_field:, double_field:, decimal_field:)
       super method(__method__).parameters.map { |parts| [parts[1], eval(parts[1].to_s)] }.to_h
     end
     
@@ -68,13 +66,11 @@ module TestService
   class NonNumericFields
     include DataClass
     val :boolean_field, Boolean
-    val :char_field, String
     val :string_field, String
     val :uuid_field, UUID
     val :date_field, Date
     val :datetime_field, DateTime
-    val :time_field, TimeOfDay
-    def initialize(boolean_field:, char_field:, string_field:, uuid_field:, date_field:, datetime_field:, time_field:)
+    def initialize(boolean_field:, string_field:, uuid_field:, date_field:, datetime_field:)
       super method(__method__).parameters.map { |parts| [parts[1], eval(parts[1].to_s)] }.to_h
     end
     
