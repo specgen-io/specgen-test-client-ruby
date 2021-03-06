@@ -1,6 +1,6 @@
 require "test/unit/runner/junitxml"
 
-require 'test_service_client/baseclient'
+require "test_service_client"
 
 module TestService
   class StringParamsTests < Test::Unit::TestCase

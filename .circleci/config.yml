@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 1.10.30
+    default: 1.10.32
 
 jobs:
   client-ruby:
@@ -17,8 +17,8 @@ jobs:
       - run:
           name: Test Ruby client
           command: |
-            gem install specgen -v << pipeline.parameters.specgen-version >>
-            gem install test-unit-runner-junitxml
+            bundle inject specgen "= << pipeline.parameters.specgen-version >>"
+            bundle install
             export SERVICE_URL=http://localhost:8081
             mkdir -p ./test-results
             rake

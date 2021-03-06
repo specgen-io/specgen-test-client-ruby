@@ -1,7 +1,5 @@
 require "date"
-require "test_service_client/type"
-require "test_service_client/enum"
-require "test_service_client/dataclass"
+require "emery"
 
 module TestService
   class Message

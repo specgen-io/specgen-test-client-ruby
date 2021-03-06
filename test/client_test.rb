@@ -1,7 +1,6 @@
-require 'test/unit/runner/junitxml'
+require "test/unit/runner/junitxml"
 
-require 'test_service_client/models'
-require 'test_service_client/client'
+require "test_service_client"
 
 module TestService
   class ClientTests < Test::Unit::TestCase

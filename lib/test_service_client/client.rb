@@ -1,10 +1,7 @@
 require "net/http"
 require "net/https"
 require "uri"
-require "test_service_client/type"
-require "test_service_client/jsoner"
-require "test_service_client/models"
-require "test_service_client/baseclient"
+require "emery"
 
 module TestService
   class EchoClient < BaseClient
