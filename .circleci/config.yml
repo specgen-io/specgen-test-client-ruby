@@ -3,10 +3,10 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 1.10.32
+    default: 1.10.38
 
 jobs:
-  client-ruby:
+  build-test:
     working_directory: ~/specgen-tests
     docker:
       - image: circleci/ruby:2.4.9
@@ -73,7 +73,7 @@ commands:
             done
 
 workflows:
-  client-ruby:
+  build-test:
     jobs:
-      - client-ruby:
+      - build-test:
           context: specgen
