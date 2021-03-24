@@ -49,6 +49,12 @@ operations:
       response:
         ok: empty
 
+    check_response_forbidden:
+      endpoint: GET /check/forbidden
+      response:
+        ok: empty
+        forbidden: empty
+
 models:
   Message:
     int_field: int
