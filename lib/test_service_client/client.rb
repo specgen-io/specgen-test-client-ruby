@@ -13,7 +13,7 @@ module TestService
       response = @client.request(request)
       case response.code
       when '200'
-        Jsoner.from_json(Message, response.body)
+        OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
@@ -28,7 +28,7 @@ module TestService
       response = @client.request(request)
       case response.code
       when '200'
-        Jsoner.from_json(Message, response.body)
+        OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
@@ -44,7 +44,7 @@ module TestService
       response = @client.request(request)
       case response.code
       when '200'
-        Jsoner.from_json(Message, response.body)
+        OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
@@ -59,7 +59,7 @@ module TestService
       response = @client.request(request)
       case response.code
       when '200'
-        Jsoner.from_json(Message, response.body)
+        OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
@@ -86,7 +86,21 @@ module TestService
       response = @client.request(request)
       case response.code
       when '200'
-        nil
+        OpenStruct.new(:ok => nil, :ok? => true)
+      else
+        raise StandardError.new("Unexpected HTTP response code #{response.code}")
+      end
+    end
+    
+    def check_response_forbidden()
+      url = @base_uri + '/check/forbidden'
+      request = Net::HTTP::Get.new(url)
+      response = @client.request(request)
+      case response.code
+      when '200'
+        OpenStruct.new(:ok => nil, :ok? => true, :forbidden? => false)
+      when '403'
+        OpenStruct.new(:forbidden => nil, :ok? => false, :forbidden? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
