@@ -4,6 +4,25 @@ require "uri"
 require "emery"
 
 module TestService
+  module V2
+    class EchoClient < BaseClient
+      def echo_body(body:)
+        url = @base_uri + '/v2/echo/body'
+        request = Net::HTTP::Post.new(url)
+        body_json = Jsoner.to_json(Message, T.check_var('body', Message, body))
+        request.body = body_json
+        response = @client.request(request)
+        case response.code
+        when '200'
+          OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
+        else
+          raise StandardError.new("Unexpected HTTP response code #{response.code}")
+        end
+      end
+      
+    end
+  end
+  
   class EchoClient < BaseClient
     def echo_body(body:)
       url = @base_uri + '/echo/body'
@@ -104,16 +123,6 @@ module TestService
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
-    end
-    
-  end
-  
-  class TestServiceClient
-    attr_reader :echo_client
-    attr_reader :check_client
-    def initialize(base_url)
-      @echo_client = EchoClient.new(base_url)
-      @check_client = CheckClient.new(base_url)
     end
     
   end

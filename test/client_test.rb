@@ -38,3 +38,16 @@ module TestService
     end
   end
 end
+
+module TestService::V2
+  class ClientTests < Test::Unit::TestCase
+    def test_echo_body
+      request_body = Message.new(bool_field: true, string_field: "the string")
+      client = EchoClient.new(URI(ENV["SERVICE_URL"]))
+      response = client.echo_body(body: request_body)
+      assert_true response.respond_to? :ok
+      assert_true response.ok?
+      assert_equal request_body, response.ok
+    end
+  end
+end
