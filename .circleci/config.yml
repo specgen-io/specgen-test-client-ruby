@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 2.0.91
+    default: 2.0.95
 
 jobs:
   build-test:
