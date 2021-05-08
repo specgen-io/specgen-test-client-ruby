@@ -10,7 +10,6 @@ http:
         body: Message
         response:
           ok: Message
-
   echo:
     echo_body:
       endpoint: POST /echo/body
@@ -57,22 +56,21 @@ http:
       response:
         ok: empty
 
-    check_response_forbidden:
+    check_forbidden:
       endpoint: GET /check/forbidden
       response:
-        ok: empty
         forbidden: empty
 
 models:
   v2:
     Message:
-      bool_field: bool
+      bool_field: boolean
       string_field: string
 
   Message:
     int_field: int
     string_field: string
-  
+
   Choice:
     enum:
       first_choice: FIRST_CHOICE

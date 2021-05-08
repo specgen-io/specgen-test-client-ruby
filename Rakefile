@@ -7,5 +7,6 @@ task :generate_code do
 end
 
 task :test => :generate_code do
+  FileUtils.mkdir_p "./test-results"
   ruby "-Ilib:test test/*_test.rb --runner=junitxml --junitxml-output-file=./test-results/junit.xml"
 end

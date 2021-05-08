@@ -111,15 +111,13 @@ module TestService
       end
     end
     
-    def check_response_forbidden()
+    def check_forbidden()
       url = @base_uri + '/check/forbidden'
       request = Net::HTTP::Get.new(url)
       response = @client.request(request)
       case response.code
-      when '200'
-        OpenStruct.new(:ok => nil, :ok? => true, :forbidden? => false)
       when '403'
-        OpenStruct.new(:forbidden => nil, :ok? => false, :forbidden? => true)
+        OpenStruct.new(:forbidden => nil, :forbidden? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end

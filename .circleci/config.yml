@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   specgen-version:
     type: string
-    default: 2.0.95
+    default: 2.0.151
 
 jobs:
   build-test:
@@ -20,7 +20,6 @@ jobs:
             bundle inject specgen "= << pipeline.parameters.specgen-version >>"
             bundle install
             export SERVICE_URL=http://localhost:8081
-            mkdir -p ./test-results
             rake
       - store_test_results:
           path: ./test-results
