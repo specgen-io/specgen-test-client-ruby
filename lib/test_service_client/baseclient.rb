@@ -5,7 +5,7 @@ require "cgi"
 
 require "emery"
 
-module TestService
+module Http
   class BaseClient
     attr_reader :uri
     attr_reader :client

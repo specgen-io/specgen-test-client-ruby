@@ -2,7 +2,7 @@ require "test/unit/runner/junitxml"
 
 require "test_service_client"
 
-module TestService
+module Http
   class StringParamsTests < Test::Unit::TestCase
     def test_url_params_set
       params = StringParams.new

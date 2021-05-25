@@ -4,26 +4,7 @@ require "uri"
 require "emery"
 
 module TestService
-  module V2
-    class EchoClient < BaseClient
-      def echo_body(body:)
-        url = @base_uri + '/v2/echo/body'
-        request = Net::HTTP::Post.new(url)
-        body_json = Jsoner.to_json(Message, T.check_var('body', Message, body))
-        request.body = body_json
-        response = @client.request(request)
-        case response.code
-        when '200'
-          OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
-        else
-          raise StandardError.new("Unexpected HTTP response code #{response.code}")
-        end
-      end
-      
-    end
-  end
-  
-  class EchoClient < BaseClient
+  class EchoClient < Http::BaseClient
     def echo_body(body:)
       url = @base_uri + '/echo/body'
       request = Net::HTTP::Post.new(url)
@@ -39,7 +20,7 @@ module TestService
     end
     
     def echo_query(int_query:, string_query:)
-      query = StringParams.new
+      query = Http::StringParams.new
       query.set('int_query', Integer, int_query)
       query.set('string_query', String, string_query)
       url = @base_uri + '/echo/query' + query.query_str
@@ -54,7 +35,7 @@ module TestService
     end
     
     def echo_header(int_header:, string_header:)
-      header = StringParams.new
+      header = Http::StringParams.new
       header.set('Int-Header', Integer, int_header)
       header.set('String-Header', String, string_header)
       url = @base_uri + '/echo/header'
@@ -70,7 +51,7 @@ module TestService
     end
     
     def echo_url_params(int_url:, string_url:)
-      url_params = StringParams.new
+      url_params = Http::StringParams.new
       url_params.set('int_url', Integer, int_url)
       url_params.set('string_url', String, string_url)
       url = @base_uri + url_params.set_to_url('/echo/url_params/{int_url}/{string_url}')
@@ -86,9 +67,9 @@ module TestService
     
   end
   
-  class CheckClient < BaseClient
+  class CheckClient < Http::BaseClient
     def check_query(p_string:, p_string_opt:, p_string_array:, p_date:, p_date_array:, p_datetime:, p_int:, p_long:, p_decimal:, p_enum:, p_string_defaulted: 'the default value')
-      query = StringParams.new
+      query = Http::StringParams.new
       query.set('p_string', String, p_string)
       query.set('p_string_opt', T.nilable(String), p_string_opt)
       query.set('p_string_array', T.array(String), p_string_array)
@@ -118,6 +99,25 @@ module TestService
       case response.code
       when '403'
         OpenStruct.new(:forbidden => nil, :forbidden? => true)
+      else
+        raise StandardError.new("Unexpected HTTP response code #{response.code}")
+      end
+    end
+    
+  end
+end
+
+module TestService::V2
+  class EchoClient < Http::BaseClient
+    def echo_body(body:)
+      url = @base_uri + '/v2/echo/body'
+      request = Net::HTTP::Post.new(url)
+      body_json = Jsoner.to_json(Message, T.check_var('body', Message, body))
+      request.body = body_json
+      response = @client.request(request)
+      case response.code
+      when '200'
+        OpenStruct.new(:ok => Jsoner.from_json(Message, response.body), :ok? => true)
       else
         raise StandardError.new("Unexpected HTTP response code #{response.code}")
       end
